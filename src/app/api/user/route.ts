@@ -24,6 +24,6 @@ export async function POST(req: Request) {
     `POST /user/detail?address response from database: ${JSON.stringify(data)}`
   );
 
-  const newUser: User = data;
+  const newUser: User = data as User;
   return Response.json(newUser, { status: 200 });
 }

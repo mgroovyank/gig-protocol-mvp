@@ -10,13 +10,13 @@ datasource db {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model chat {
-  chat_id            String     @id @unique
-  gemini_sentiment   String?
-  created_at         DateTime   @default(now()) @db.Timestamptz(6)
-  updated_at         DateTime?  @db.Timestamp(6)
-  gemini_explanation String?
+  chatId            String      @id @unique @map("chat_id")
+  geminiSentiment   String?     @map("gemini_sentiment")
+  createdAt         DateTime   @default(now()) @db.Timestamptz(6) @map("created_at")
+  updatedAt         DateTime?  @db.Timestamp(6) @map("updated_at")
+  geminiExplanation String?    @map("gemini_explanation")
   chat_uuid          String?    @db.Uuid
-  gig_offer          gigOffer[]
+  gigOffer          gigOffer[]  
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -48,10 +48,10 @@ model gig {
   updated_at           DateTime?  @db.Timestamptz(6)
   freelancersCount     Int?       @map("freelancers_count")
   gig_on_chain_id      String?
-  tx_hash              String?
+  txHash              String?     @map("tx_hash")
   dispute              dispute[]
   user                 user       @relation(fields: [clientId], references: [userId], onDelete: NoAction, onUpdate: NoAction)
-  gig_file             gig_file[]
+  gig_file             gigFile[]
   gig_offer            gigOffer[]
   gig_task             gigTask[]
 }
@@ -143,22 +143,24 @@ model gigOffer {
   updatedAt    DateTime? @map("updated_at") @db.Timestamptz(6)
   chatUuid     String?   @map("chat_uuid") @db.Uuid
   clientId     Int?      @map("client_id")
-  chat         chat?     @relation(fields: [chatId], references: [chat_id], onDelete: NoAction, onUpdate: NoAction)
+  chat         chat?     @relation(fields: [chatId], references: [chatId], onDelete: NoAction, onUpdate: NoAction)
   gig          gig       @relation(fields: [gigId], references: [gigId], onDelete: NoAction, onUpdate: NoAction)
 
   @@map("gig_offer")
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
-model gig_file {
+model gigFile {
   id          Int       @id(map: "gig_files_pkey") @default(autoincrement())
-  gig_id      Int
+  gigId      Int        @map("gig_id")
   name        String?
   type        String?
   url         String?
-  uploaded_by Int?
-  created_at  DateTime? @db.Timestamptz(6)
-  updated_at  DateTime? @db.Timestamptz(6)
+  uploadedBy Int?       @map("uploaded_by")
+  createdAt  DateTime?  @db.Timestamptz(6) @map("created_at")
+  updatedAt  DateTime?  @db.Timestamptz(6) @map("updated_at")
   size        Int?
-  gig         gig       @relation(fields: [gig_id], references: [gigId], onDelete: NoAction, onUpdate: NoAction)
+  gig         gig       @relation(fields: [gigId], references: [gigId], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("gig_file")
 }

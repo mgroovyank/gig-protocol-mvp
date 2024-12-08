@@ -28,6 +28,6 @@ export async function POST(req: Request) {
     return new Response("Joining as Freelancer Failed", { status: 500 });
   }
 
-  const updatedUser: User = data;
+  const updatedUser: User = data as User;
   return Response.json(updatedUser, { status: 200 });
 }

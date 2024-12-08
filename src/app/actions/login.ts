@@ -118,7 +118,7 @@ async function getOrCreateUserInDatabase(address: string): Promise<test> {
     console.log("Login Failed!!!", error);
   }
 
-  const foundUser: User | undefined | null = data;
+  const foundUser: User | undefined | null = data as User;
   console.log("Exisitng user:", foundUser);
   if (foundUser) {
     console.log("Set up done as existing user!!");
@@ -135,7 +135,7 @@ async function getOrCreateUserInDatabase(address: string): Promise<test> {
       console.log("Login Failed!!!", error);
     }
 
-    const newUser: User | undefined | null = data;
+    const newUser: User | undefined | null = data as User;
     console.log(newUser);
     return { userId: newUser!.userId, role: newUser!.role };
   }
