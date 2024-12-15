@@ -51,3 +51,8 @@ interface AuthObject {
   updateLoggedInUser: (userId: number, role: string) => void;
   resetLoggedInUser: () => void;
 }
+
+interface ApiResponseMsgStatus {
+  message: string;
+  status: number;
+}
